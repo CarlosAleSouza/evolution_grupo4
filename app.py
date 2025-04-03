@@ -1,3 +1,5 @@
+
+
 import streamlit as st
 import pandas as pd
 import seaborn as sns
@@ -248,29 +250,24 @@ if st.session_state['pagina'] == 'Resultados':
     engajado_dados = resumo[resumo['Categoria'] == 'Engajado']
     nao_engajado_dados = resumo[resumo['Categoria'] == 'Não Engajado']
 
-    # Criar os gráficos de pizza
-    fig, ax = plt.subplots(1, 2, figsize=(12, 6))
-
     # Definição das cores e rótulos
     cores_engajado = ['skyblue', 'red']
     cores_nao_engajado = ['lightgray', 'red']
     labels = ['Não Churn', 'Churn']
 
     # Gráfico para Engajados
-    ax[0].pie(engajado_dados['Total'], textprops={'fontsize': 16}, autopct='%1.1f%%', colors=cores_engajado)
-    ax[0].set_title('Engajados', fontsize=20)
-    ax[0].legend(labels, loc="best", fontsize=16,  bbox_to_anchor = (1,1))  # Adicionando legenda
+    fig1, ax1 = plt.subplots(figsize=(2, 2))
+    ax1.pie(engajado_dados['Total'], textprops={'fontsize': 8}, autopct='%1.1f%%', colors=cores_engajado)
+    ax1.set_title('Engajados', fontsize=10)
+    ax1.legend(labels, loc="best", fontsize=8, bbox_to_anchor=(1,1))  # Adicionando legenda
+    st.pyplot(fig1)
 
     # Gráfico para Não Engajados
-    ax[1].pie(nao_engajado_dados['Total'], textprops={'fontsize':16}, autopct='%1.1f%%', colors=cores_nao_engajado)
-    ax[1].set_title('Não Engajados', fontsize=20)
-    ax[1].legend(labels, loc="best", fontsize=16,  bbox_to_anchor = (1,1))  # Adicionando legenda
-
-    # Ajustar layout
-    plt.tight_layout()
-
-    # Exibir no Streamlit
-    st.pyplot(fig)
+    fig2, ax2 = plt.subplots(figsize=(2, 2))
+    ax2.pie(nao_engajado_dados['Total'], textprops={'fontsize':8}, autopct='%1.1f%%', colors=cores_nao_engajado)
+    ax2.set_title('Não Engajados', fontsize=10)
+    ax2.legend(labels, loc="best", fontsize=8, bbox_to_anchor=(1,1))  # Adicionando legenda
+    st.pyplot(fig2)
 
 
 ####################### PÁGINA DE GRÁFICOS ##################################################
