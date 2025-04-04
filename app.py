@@ -142,13 +142,12 @@ if st.session_state['pagina'] == 'Resultados':
         st.html('''
                 <b>País:</b> Alemanha <br>
                 <b>Gênero:</b> Feminino <br>
-                <b>Idade:</b> Entre 32 e 45 anos
+                <b>Idade:</b> A partir de 32 anos
                 ''')
                         
         perfil = dados[
                 (dados['País'] == 'Alemanha') &
                 (dados['Idade'] >= 32) &
-                (dados['Idade'] <=45) &
                 (dados['Gênero'] == 'Feminino')
                ]
 
@@ -169,9 +168,6 @@ if st.session_state['pagina'] == 'Resultados':
                         
         perfil = dados[
                 (dados['País'] == 'Alemanha') &
-                (dados['Idade'] >= 32) &
-                (dados['Idade'] <=45) &
-                (dados['Gênero'] == 'Feminino')
                ]
 
         perc_churn = round(perfil['Churn'].sum() / perfil.shape[0] * 100, 2)
@@ -188,13 +184,12 @@ if st.session_state['pagina'] == 'Resultados':
     with tab_r3:
         st.html('''
                 <b>País:</b> Alemanha <br>
-                <b>Idade:</b> 32 a 45 anos
+                <b>Idade:</b> A partir de 32
                 ''')
                         
         perfil = dados[
                 (dados['País'] == 'Alemanha') &
-                (dados['Idade'] >= 32) &
-                (dados['Idade'] <=45)
+                (dados['Idade'] >= 32)
                ]
 
         perc_churn = round(perfil['Churn'].sum() / perfil.shape[0] * 100, 2)
