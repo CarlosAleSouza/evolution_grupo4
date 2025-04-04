@@ -77,7 +77,6 @@ obs_cartao = ' (Desconsiderado o quartil inferior)'
 min_produtos = 2
 
 engajados = dados[
-    (dados['Quantidade de Produtos'] == min_produtos) &
     (dados['Cartão de Crédito'] == 1) &
     (dados['Cliente Ativo'] == 1) &
     (dados['Pontos do Cartão'] >= min_cartao)
@@ -213,7 +212,6 @@ if st.session_state['pagina'] == 'Resultados':
             <b>Cliente Ativo: </b> SIM <br>
             <b>Cartão de Crédito:</b> SIM<br>
             <b>Pontos do Cartão:</b> Mínimo {str(min_cartao) + obs_cartao} </br>
-            <b>Quantidade de Produtos:</b> {str(min_produtos)}<br>
             <b>Público considerado engajado:</b> {str(len(engajados))}'''
     
     st.html(texto)
