@@ -167,7 +167,7 @@ if st.session_state['pagina'] == 'Resultados':
                 ''')
                         
         perfil = dados[
-                (dados['País'] == 'Alemanha') &
+                (dados['País'] == 'Alemanha')
                ]
 
         perc_churn = round(perfil['Churn'].sum() / perfil.shape[0] * 100, 2)
