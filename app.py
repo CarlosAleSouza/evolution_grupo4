@@ -71,6 +71,19 @@ def histograma(coluna_1, coluna_2, dados):
 
     return fig
 
+# Filtro para público considerado engajado
+min_cartao = 410
+obs_cartao = ' (Desconsiderado o quartil inferior)'
+min_produtos = 2
+
+engajados = dados[
+    (dados['Quantidade de Produtos'] == min_produtos) &
+    (dados['Cartão de Crédito'] == 1) &
+    (dados['Cliente Ativo'] == 1) &
+    (dados['Pontos do Cartão'] >= min_cartao)
+][['Quantidade de Produtos','Cartão de Crédito', 'Cliente Ativo', 'Pontos do Cartão', 'Churn']]
+
+
 
 ####################################################################################
 ########################## Criação da página #######################################
@@ -200,23 +213,17 @@ if st.session_state['pagina'] == 'Resultados':
     st.divider()
     st.subheader('Relação entre Churn e Engajamento')
 
-    engajados = dados[
-        (dados['Quantidade de Produtos'] > 1) &
-        (dados['Cartão de Crédito'] == 1) &
-        (dados['Cliente Ativo'] == 1)
-    ][['Quantidade de Produtos','Cartão de Crédito', 'Cliente Ativo', 'Pontos do Cartão', 'Churn']]
-
-    texto1 = '''
+    texto = f'''
             <b>Critérios para considerar cliente engajado:</b><br>
             <b>Cliente Ativo: </b> SIM <br>
             <b>Cartão de Crédito:</b> SIM<br>
-            <b>Pontos do Cartão:</b> Mínimo 410 (Desconsiderado o quartil inferior)</br>
-            <b>Quantidade de Produtos:</b> Mínimo 2<br>
-            <b>Nível de Satisfação:</b> Mínimo de 4<br>
-            <b>Público considerado engajado:</b> '''
-    texto = texto1 + str(len(engajados))
-
+            <b>Pontos do Cartão:</b> Mínimo {str(min_cartao) + obs_cartao} </br>
+            <b>Quantidade de Produtos:</b> {str(min_produtos)}<br>
+            <b>Público considerado engajado:</b> {str(len(engajados))}'''
+    
     st.html(texto)
+
+    # Tratamento de dados para gerar o gráfico de engajamento    
 
     nao_engajados = dados.drop(engajados.index)
 
@@ -249,25 +256,23 @@ if st.session_state['pagina'] == 'Resultados':
     # Filtrar os dados para cada categoria
     engajado_dados = resumo[resumo['Categoria'] == 'Engajado']
     nao_engajado_dados = resumo[resumo['Categoria'] == 'Não Engajado']
-
-    # Definição das cores e rótulos
-    cores_engajado = ['skyblue', 'red']
-    cores_nao_engajado = ['lightgray', 'red']
     labels = ['Não Churn', 'Churn']
 
-    # Gráfico para Engajados
-    fig1, ax1 = plt.subplots(figsize=(2, 2))
-    ax1.pie(engajado_dados['Total'], textprops={'fontsize': 8}, autopct='%1.1f%%', colors=cores_engajado)
-    ax1.set_title('Engajados', fontsize=10)
-    ax1.legend(labels, loc="best", fontsize=8, bbox_to_anchor=(1,1))  # Adicionando legenda
-    st.pyplot(fig1)
+    tab_e1, tab_e2 = st.tabs(['Engajados','Não Engajados'])
 
-    # Gráfico para Não Engajados
-    fig2, ax2 = plt.subplots(figsize=(2, 2))
-    ax2.pie(nao_engajado_dados['Total'], textprops={'fontsize':8}, autopct='%1.1f%%', colors=cores_nao_engajado)
-    ax2.set_title('Não Engajados', fontsize=10)
-    ax2.legend(labels, loc="best", fontsize=8, bbox_to_anchor=(1,1))  # Adicionando legenda
-    st.pyplot(fig2)
+    with tab_e1:
+        # Gráfico para Engajados
+        fig1, ax1 = plt.subplots(figsize=(2, 2))
+        ax1.pie(engajado_dados['Total'], textprops={'fontsize': 8}, autopct='%1.1f%%')
+        ax1.legend(labels, loc="best", fontsize=8, bbox_to_anchor=(1,1))  # Adicionando legenda
+        st.pyplot(fig1)
+
+    with tab_e2:
+        # Gráfico para Não Engajados
+        fig2, ax2 = plt.subplots(figsize=(2, 2))
+        ax2.pie(nao_engajado_dados['Total'], textprops={'fontsize':8}, autopct='%1.1f%%')
+        ax2.legend(labels, loc="best", fontsize=8, bbox_to_anchor=(1,1))  # Adicionando legenda
+        st.pyplot(fig2)
 
 
 ####################### PÁGINA DE GRÁFICOS ##################################################
